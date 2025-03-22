@@ -1,0 +1,9 @@
+.cow {
+    position: absolute;
+    bottom: 50px;
+    width: 60px;
+    height: 40px;
+    background: #fff;
+    border-radius: 20px;
+    animation: graze 5s infinite ease-in-out;
+}

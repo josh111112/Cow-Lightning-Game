@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudy Day with Cows</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #87CEEB, #90EE90);
+            position: relative;
+        }
+
+        .cloud {
+            position: absolute;
+            background: #4a4a4a;
+            border-radius: 50px;
+            animation: float 20s infinite linear;
+        }
+
+        .cow {
+            position: absolute;
+            bottom: 50px;
+            width: 60px;
+            height: 40px;
+            background: #fff;
+            border-radius: 20px;
+            animation: graze 5s infinite ease-in-out;
+        }
+
+        .cow::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 20px;
+            height: 20px;
+            background: #000;
+            border-radius: 50%;
+        }
+
+        .cow::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 35px;
+            width: 15px;
+            height: 15px;
+            background: #000;
+            border-radius: 50%;
+        }
+
+        .steak {
+            position: absolute;
+            bottom: 50px;
+            width: 60px;
+            height: 40px;
+            background: #8B4513;
+            border-radius: 5px;
+            animation: sizzle 2s infinite ease-in-out;
+            transform-origin: center;
+        }
+
+        .steak::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 50px;
+            height: 30px;
+            background: #A0522D;
+            border-radius: 3px;
+        }
+
+        .steak::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 25px;
+            background: #8B0000;
+            border-radius: 2px;
+        }
+
+        /* Add bone to steak */
+        .steak .bone {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 25px;
+            background: #F5F5F5;
+            border-radius: 3px;
+        }
+
+        .steak .bone::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 10px;
+            background: #F5F5F5;
+            border-radius: 5px;
+        }
+
+        .steak .bone::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 5px;
+            background: #F5F5F5;
+            border-radius: 2px;
+        }
+
+        /* Add fat marbling */
+        .steak .marbling {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 30px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            transform: rotate(45deg);
+        }
+
+        .steak .marbling::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 20px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            transform: rotate(-45deg);
+        }
+
+        @keyframes float {
+            from {
+                transform: translateX(-100px);
+            }
+            to {
+                transform: translateX(calc(100vw + 100px));
+            }
+        }
+
+        @keyframes graze {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes sizzle {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+            }
+            25% {
+                transform: scale(1.02) rotate(1deg);
+            }
+            75% {
+                transform: scale(1.02) rotate(-1deg);
+            }
+            50% {
+                transform: scale(1.05) rotate(0deg);
+            }
+        }
+
+        /* Design Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="color"],
+        input[type="range"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-cow {
+            width: 100px;
+            height: 60px;
+            margin: 1rem auto;
+            background: #fff;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .preview-cow::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 20px;
+            height: 20px;
+            background: #000;
+            border-radius: 50%;
+        }
+
+        .preview-cow::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 35px;
+            width: 15px;
+            height: 15px;
+            background: #000;
+            border-radius: 50%;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .game-over-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+        }
+
+        .game-over-screen h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .game-over-screen p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .play-again-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+        }
+
+        .play-again-btn:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="lightningCanvas"></canvas>
+    <div id="designModal" class="modal">
+        <div class="modal-content">
+            <h2>Design Your Cow</h2>
+            <div class="form-group">
+                <label for="cowName">Cow's Name:</label>
+                <input type="text" id="cowName" placeholder="Enter your cow's name">
+            </div>
+            <div class="form-group">
+                <label for="cowColor">Cow's Color:</label>
+                <input type="color" id="cowColor" value="#ffffff">
+            </div>
+            <div class="form-group">
+                <label for="cowSize">Cow's Size:</label>
+                <input type="range" id="cowSize" min="40" max="100" value="60">
+            </div>
+            <div class="preview-cow" id="previewCow"></div>
+            <button onclick="startScene()">Start Scene</button>
+        </div>
+    </div>
+
+    <div id="gameOverScreen" class="game-over-screen">
+        <h1>Game Over!</h1>
+        <p>Your cow was struck by lightning!</p>
+        <button class="play-again-btn" onclick="restartGame()">Play Again</button>
+    </div>
+
+    <div id="victoryScreen" class="game-over-screen">
+        <h1>Victory!</h1>
+        <p>Your cow survived while all others were struck!</p>
+        <button class="play-again-btn" onclick="restartGame()">Play Again</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
